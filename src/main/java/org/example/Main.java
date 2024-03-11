@@ -2,6 +2,9 @@ package org.example;
 
 import static spark.Spark.*;
 import com.google.gson.Gson; // Import Gson library for JSON parsing
+import com.google.gson.JsonArray;
+import com.google.gson.*;
+
 import java.util.ArrayList; // Import ArrayList
 
 public class Main {
@@ -16,7 +19,6 @@ public class Main {
         post("/authenticateAndRequestSimilarOffers", (req, res) -> {
 
             // Check if Body contain data
-
             if( req.body() == null || req.body().isEmpty()){
                 res.status(400); // Set the HTTP status code 400 (Bad Request)
                 return "Body is missing";
@@ -52,9 +54,40 @@ public class Main {
                 res.status(401);
                 return "Invalid Username OR Password";  // Set HTTP request to 401 as Unauthorized
             }
-            String[] jobOffer = new Gson().fromJson(req.body(), String[].class);
+            JsonArray jobOffer = new Gson().fromJson(req.body(), JsonArray.class);
 
-            return "Authentication and request for similar offers completed successfully!" + jobOffer;
+            for (JsonElement element : jobOffer) {
+                if (!validateJobOfferObject(element.getAsJsonObject())) {
+                    // If validation fails for any object, return an error response
+                    res.status(400); // Set HTTP status code 400 (Bad Request)
+                    return "Invalid job offer data";
+                }
+                else {
+                    JsonArray jobOfferArray = new JsonArray();
+
+                    // Create some job offer objects and add them to the JSON array
+                    JsonObject jobOffer1 = new JsonObject();
+                    jobOffer1.addProperty("title", "Restaurant 1");
+                    jobOffer1.addProperty("description", "Standard Delivery");
+                    jobOffer1.addProperty("pay", 5);
+                    jobOfferArray.add(jobOffer1);
+
+                    JsonObject jobOffer2 = new JsonObject();
+                    jobOffer2.addProperty("title", "Restaurant 2");
+                    jobOffer2.addProperty("description", "Fast Pace Delivery");
+                    jobOffer2.addProperty("pay", 7);
+                    jobOfferArray.add(jobOffer2);
+
+                    JsonObject jobOffer3 = new JsonObject();
+                    jobOffer3.addProperty("title", "Restaurant 3");
+                    jobOffer3.addProperty("description", "Within 10 min Delivery");
+                    jobOffer3.addProperty("pay", 10);
+                    jobOfferArray.add(jobOffer3);
+                    return jobOfferArray;
+                }
+            }
+                return "Something Went Wrong";
+
         });
 
         // Route for submitting selected job
@@ -76,4 +109,25 @@ public class Main {
         // Default route
         get("/", (req, res) -> "Hello, World!");
     }
+    // Method to validate a single job offer object
+    private static boolean validateJobOfferObject(JsonObject jobOfferObject) {
+        // Check if the object contains the required fields
+        if (!jobOfferObject.has("title") || !jobOfferObject.has("description") || !jobOfferObject.has("pay")) {
+            return false; // Missing required fields
+        }
+
+        // Check if the types of the fields are as expected
+        if (!jobOfferObject.get("title").isJsonPrimitive() ||
+                !jobOfferObject.get("description").isJsonPrimitive() ||
+                !jobOfferObject.get("pay").getAsJsonPrimitive().isNumber()) {
+            return false; // Incorrect field types
+        }
+
+        return true;
+    }
+
+
+
 }
+
+
