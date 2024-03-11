@@ -5,8 +5,6 @@ import com.google.gson.Gson; // Import Gson library for JSON parsing
 import com.google.gson.JsonArray;
 import com.google.gson.*;
 
-import java.util.ArrayList; // Import ArrayList
-
 public class Main {
 
     private static final String CORRECT_USERNAME = "admin";
@@ -43,7 +41,6 @@ public class Main {
 //            }
 
             // Proceed with authentication and request for similar offers logic
-            String requestBody = req.body();
             String username = req.queryParams("username");
             String password = req.queryParams("password");
 //            String[] jobOffer = new String[]{req.queryParams("joboffer")};
@@ -117,13 +114,9 @@ public class Main {
         }
 
         // Check if the types of the fields are as expected
-        if (!jobOfferObject.get("title").isJsonPrimitive() ||
-                !jobOfferObject.get("description").isJsonPrimitive() ||
-                !jobOfferObject.get("pay").getAsJsonPrimitive().isNumber()) {
-            return false; // Incorrect field types
-        }
-
-        return true;
+        return jobOfferObject.get("title").isJsonPrimitive() &&
+                jobOfferObject.get("description").isJsonPrimitive() &&
+                jobOfferObject.get("pay").getAsJsonPrimitive().isNumber(); // Incorrect field types
     }
 
 
