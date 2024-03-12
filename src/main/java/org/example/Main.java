@@ -117,7 +117,9 @@ public class Main {
         // Check if the types of the fields are as expected
         return  jobOfferObject.get("title").isJsonPrimitive() &&
                 jobOfferObject.get("description").isJsonPrimitive() &&
-                jobOfferObject.get("pay").getAsJsonPrimitive().isNumber(); // Incorrect field types
+                jobOfferObject.get("pay").getAsJsonPrimitive().isNumber() &&
+                jobOfferObject.get("origin").isJsonPrimitive() &&
+                jobOfferObject.get("destination").isJsonPrimitive(); // Incorrect field types
     }
 }
 
