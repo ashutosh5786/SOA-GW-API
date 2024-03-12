@@ -9,6 +9,7 @@ public class Main {
 
     private static final String CORRECT_USERNAME = "admin";
     private static final String CORRECT_PASSWORD = "password";
+
     public static void main(String[] args) {
         // Set port
         port(8000);
@@ -19,19 +20,19 @@ public class Main {
             // Check if Body contain data
             if( req.body() == null || req.body().isEmpty()){
                 res.status(400); // Set the HTTP status code 400 (Bad Request)
-                return "Body is missing";
+                return "Job Details are missing: [{'title':'value', 'description':'value', 'pay':value, 'origin':'value', 'destination':'value'}]";
             }
 
             // Check if username parameter is missing
             if (!req.queryParams().contains("username")) {
                 res.status(400); // Set HTTP status code 400 (Bad Request)
-                return "Username parameter is missing";
+                return "Username parameter is missing: username";
             }
 
             // Check if password parameter is missing
             if (!req.queryParams().contains("password")) {
                 res.status(400); // Set HTTP status code 400 (Bad Request)
-                return "Password parameter is missing";
+                return "Password parameter is missing: password";
             }
 
             // Proceed with authentication and request for similar offers logic
@@ -52,36 +53,7 @@ public class Main {
                     return "Invalid job offer data";
                 }
                 else {
-                    JsonArray jobOfferArray = new JsonArray();
-
-                    // Create some job offer objects and add them to the JSON array
-                    JsonObject jobOffer1 = new JsonObject();
-                    jobOffer1.addProperty("offerId", 1001);
-                    jobOffer1.addProperty("title", "Restaurant 1");
-                    jobOffer1.addProperty("description", "Standard Delivery");
-                    jobOffer1.addProperty("origin", "London");
-                    jobOffer1.addProperty("Destination", "Frankfurt");
-                    jobOffer1.addProperty("pay", 5);
-                    jobOfferArray.add(jobOffer1);
-
-                    JsonObject jobOffer2 = new JsonObject();
-                    jobOffer2.addProperty("offerId", 1002);
-                    jobOffer2.addProperty("title", "Restaurant 2");
-                    jobOffer2.addProperty("description", "Fast Pace Delivery");
-                    jobOffer2.addProperty("origin", "London");
-                    jobOffer2.addProperty("Destination", "Paris");
-                    jobOffer2.addProperty("pay", 7);
-                    jobOfferArray.add(jobOffer2);
-
-                    JsonObject jobOffer3 = new JsonObject();
-                    jobOffer3.addProperty("offerId", 1003);
-                    jobOffer3.addProperty("title", "Restaurant 3");
-                    jobOffer3.addProperty("description", "Within 10 min Delivery");
-                    jobOffer3.addProperty("origin", "London");
-                    jobOffer3.addProperty("Destination", "Berlin");
-                    jobOffer3.addProperty("pay", 10);
-                    jobOfferArray.add(jobOffer3);
-                    return jobOfferArray;
+                    return getJsonElements();
                 }
             }
                 return "Something Went Wrong";
@@ -90,10 +62,33 @@ public class Main {
 
         // Route for submitting selected job
         post("/submitSelectedJob", (req, res) -> {
-            // Handle submission of selected job
-            // Implement submission of selected job logic here
+            // Checking for OfferID
+            if (!req.queryParams().contains("offerId")) {
+                res.status(400); // Set HTTP status code 400 (Bad Request)
+                return "OfferId parameter is missing: offerId";
+            }
+            String offerId = req.queryParams("offerId");
+            JsonArray jobOffers = getJsonElements();
 
-            return "Selected job submitted successfully!";
+            // Iterate through job offers to find a match for the offerId
+            boolean offerIdFound = false;
+            for (JsonElement element : jobOffers) {
+                JsonObject jobOffer = element.getAsJsonObject();
+                if (jobOffer.get("offerId").getAsString().equals(offerId)) {
+                    offerIdFound = true;
+                    break;
+                }
+            }
+
+            if (offerIdFound) {
+                // Job offer with specified offerId found
+                // Perform any additional logic here if needed
+                return "Selected job submitted successfully!";
+            } else {
+                // No job offer found with the specified offerId
+                res.status(404); // Set HTTP status code 404 (Not Found)
+                return "Error: No job offer found with offerId " + offerId;
+            }
         });
 
         // Route for requesting route and estimates
@@ -107,6 +102,40 @@ public class Main {
         // Default route
         get("/", (req, res) -> "Hello, World!");
     }
+
+    private static JsonArray getJsonElements() {
+        JsonArray jobOfferArray = new JsonArray();
+
+        // Create some job offer objects and add them to the JSON array
+        JsonObject jobOffer1 = new JsonObject();
+        jobOffer1.addProperty("offerId", 1001);
+        jobOffer1.addProperty("title", "Restaurant 1");
+        jobOffer1.addProperty("description", "Standard Delivery");
+        jobOffer1.addProperty("origin", "London");
+        jobOffer1.addProperty("Destination", "Frankfurt");
+        jobOffer1.addProperty("pay", 5);
+        jobOfferArray.add(jobOffer1);
+
+        JsonObject jobOffer2 = new JsonObject();
+        jobOffer2.addProperty("offerId", 1002);
+        jobOffer2.addProperty("title", "Restaurant 2");
+        jobOffer2.addProperty("description", "Fast Pace Delivery");
+        jobOffer2.addProperty("origin", "London");
+        jobOffer2.addProperty("Destination", "Paris");
+        jobOffer2.addProperty("pay", 7);
+        jobOfferArray.add(jobOffer2);
+
+        JsonObject jobOffer3 = new JsonObject();
+        jobOffer3.addProperty("offerId", 1003);
+        jobOffer3.addProperty("title", "Restaurant 3");
+        jobOffer3.addProperty("description", "Within 10 min Delivery");
+        jobOffer3.addProperty("origin", "London");
+        jobOffer3.addProperty("Destination", "Berlin");
+        jobOffer3.addProperty("pay", 10);
+        jobOfferArray.add(jobOffer3);
+        return jobOfferArray;
+    }
+
     // Method to validate a single job offer object
     private static boolean validateJobOfferObject(JsonObject jobOfferObject) {
         // Check if the object contains the required fields
