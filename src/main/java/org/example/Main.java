@@ -118,9 +118,6 @@ public class Main {
                 jobOfferObject.get("description").isJsonPrimitive() &&
                 jobOfferObject.get("pay").getAsJsonPrimitive().isNumber(); // Incorrect field types
     }
-
-
-
 }
 
 
