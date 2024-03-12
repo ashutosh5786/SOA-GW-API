@@ -34,17 +34,9 @@ public class Main {
                 return "Password parameter is missing";
             }
 
-            // Check if joboffer parameter is missing
-//            if (!req.queryParams().contains("joboffer")) {
-//                res.status(400); // Set HTTP status code 400 (Bad Request)
-//                return "Joboffer parameter is missing";
-//            }
-
             // Proceed with authentication and request for similar offers logic
             String username = req.queryParams("username");
             String password = req.queryParams("password");
-//            String[] jobOffer = new String[]{req.queryParams("joboffer")};
-//            String jobOffer = req.queryParams("joboffer");
             if (username.equals(CORRECT_USERNAME) && password.equals(CORRECT_PASSWORD))
                 res.status(200);  // Set HTTP request to 200 as cred are correct ALL OKK
             else {
@@ -67,6 +59,8 @@ public class Main {
                     jobOffer1.addProperty("offerId", 1001);
                     jobOffer1.addProperty("title", "Restaurant 1");
                     jobOffer1.addProperty("description", "Standard Delivery");
+                    jobOffer1.addProperty("origin", "London");
+                    jobOffer1.addProperty("Destination", "Frankfurt");
                     jobOffer1.addProperty("pay", 5);
                     jobOfferArray.add(jobOffer1);
 
@@ -74,13 +68,17 @@ public class Main {
                     jobOffer2.addProperty("offerId", 1002);
                     jobOffer2.addProperty("title", "Restaurant 2");
                     jobOffer2.addProperty("description", "Fast Pace Delivery");
+                    jobOffer2.addProperty("origin", "London");
+                    jobOffer2.addProperty("Destination", "Paris");
                     jobOffer2.addProperty("pay", 7);
                     jobOfferArray.add(jobOffer2);
 
                     JsonObject jobOffer3 = new JsonObject();
-                    jobOffer2.addProperty("offerId", 1003);
+                    jobOffer3.addProperty("offerId", 1003);
                     jobOffer3.addProperty("title", "Restaurant 3");
                     jobOffer3.addProperty("description", "Within 10 min Delivery");
+                    jobOffer3.addProperty("origin", "London");
+                    jobOffer3.addProperty("Destination", "Berlin");
                     jobOffer3.addProperty("pay", 10);
                     jobOfferArray.add(jobOffer3);
                     return jobOfferArray;
@@ -112,7 +110,7 @@ public class Main {
     // Method to validate a single job offer object
     private static boolean validateJobOfferObject(JsonObject jobOfferObject) {
         // Check if the object contains the required fields
-        if (!jobOfferObject.has("title") || !jobOfferObject.has("description") || !jobOfferObject.has("pay")) {
+        if (!jobOfferObject.has("title") || !jobOfferObject.has("description") || !jobOfferObject.has("pay") || !jobOfferObject.has("origin") || !jobOfferObject.has("destination")) {
             return false; // Missing required fields
         }
 
