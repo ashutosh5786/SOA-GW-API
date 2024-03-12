@@ -6,7 +6,7 @@ import static spark.Spark.*;
 public class Main {
     public static void main(String[] args) {
         IDUAppDUService duService = new DUAppDUServiceImpl();
-        IDUServiceRoutePlanner routePlanner = new RoutePlanner("AIzaSyC-IcYWYpPLYdDT3_hY96dHz3L-x-KDf-M");
+        IDUServiceRoutePlanner routePlanner = new RoutePlanner("AIzaSyC-IcYWYpPLYdDT3_hY96dHz3L-x-KDf-M"); // Change it after done developing
 
         port(8000); // Server Will Listen on Port 8000
 
@@ -43,9 +43,14 @@ public class Main {
 
             RouteDetails routeDetails = routePlanner.requestRouteAndEstimates(startLocation, targetLocation, transportMeans);
             if (routeDetails != null) {
-                return "Estimated Time: " + routeDetails.getEstimatedTimeInSeconds(); // Adjust the response based on RouteDetails fields
+                // Construct response JSON object with route details
+                Gson gson = new Gson();
+                String jsonResponse = gson.toJson(routeDetails);
+                res.status(200); // Set HTTP status code 200 (OK)
+                res.type("application/json"); // Set response content type
+                return jsonResponse; // Adjust the response based on RouteDetails fields
             } else {
-                res.status(999); // Set HTTP status code 500 (Internal Server Error) if route details are not available
+                res.status(500); // Set HTTP status code 500 (Internal Server Error) if route details are not available
                 return "Failed to retrieve route details.";
             }
 //            return "Route and estimates request processed successfully!";

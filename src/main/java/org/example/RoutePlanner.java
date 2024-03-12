@@ -3,6 +3,8 @@ import com.google.maps.DirectionsApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.DirectionsRoute;
+import com.google.maps.model.DirectionsLeg;
 import com.google.maps.model.TravelMode;
 import com.google.maps.model.Unit;
 
@@ -18,6 +20,7 @@ public class RoutePlanner implements IDUServiceRoutePlanner {
 
     @Override
     public RouteDetails requestRouteAndEstimates(String startLocation, String targetLocation, String transportMeans) {
+
         // Validate transportMeans
         if (!isValidTransportMeans(transportMeans)) {
             throw new IllegalArgumentException("Invalid transport means.");
@@ -41,11 +44,20 @@ public class RoutePlanner implements IDUServiceRoutePlanner {
             if (directionsResult.routes != null && directionsResult.routes.length > 0 &&
                     directionsResult.routes[0].legs != null && directionsResult.routes[0].legs.length > 0 &&
                     directionsResult.routes[0].legs[0].duration != null) {
-                // Process the directions result to extract necessary information
-                // For example, you can calculate the estimated time, distance, etc.
-                // For simplicity, let's just return the estimated time for now
-                long estimatedTimeInSeconds = directionsResult.routes[0].legs[0].duration.inSeconds;
-                return new RouteDetails(estimatedTimeInSeconds);
+
+                DirectionsRoute route = directionsResult.routes[0];
+                DirectionsLeg leg = route.legs[0];
+
+
+                // Extracting the additional route details
+                String summary = route.summary;
+                String durationText = leg.duration.humanReadable;
+                String distanceInMeters = leg.distance.humanReadable;
+                String estimatedTimeInSeconds = leg.duration.humanReadable;
+
+                // Creating RouteDetail object with all data
+
+                return new RouteDetails(estimatedTimeInSeconds, distanceInMeters, startLocation, targetLocation );
             } else {
                 throw new IllegalStateException("Invalid directions result.");
             }
