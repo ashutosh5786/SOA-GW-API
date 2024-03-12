@@ -2,11 +2,15 @@ package org.example;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import static spark.Spark.*;
+import io.github.cdimascio.dotenv.Dotenv;
 
 public class Main {
     public static void main(String[] args) {
         IDUAppDUService duService = new DUAppDUServiceImpl();
-        IDUServiceRoutePlanner routePlanner = new RoutePlanner("AIzaSyC-IcYWYpPLYdDT3_hY96dHz3L-x-KDf-M"); // Change it after done developing
+        // Load API key from .env file
+        Dotenv dotenv = Dotenv.load();
+        String apiKey = dotenv.get("API_KEY");
+        IDUServiceRoutePlanner routePlanner = new RoutePlanner(apiKey); // Change it after done developing
 
         port(8000); // Server Will Listen on Port 8000
 
