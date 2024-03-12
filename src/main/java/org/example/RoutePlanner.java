@@ -23,7 +23,11 @@ public class RoutePlanner implements IDUServiceRoutePlanner {
 
         // Validate transportMeans
         if (!isValidTransportMeans(transportMeans)) {
-            throw new IllegalArgumentException("Invalid transport means.");
+            // Construct a message with the valid choices
+            String validChoices = "Valid choices are: driving, bicycling, walking";
+            String errorMessage = "Invalid transport means. " + validChoices;
+            // Return a RouteDetails object indicating an error
+            return new RouteDetails(errorMessage);
         }
 
         // Prepare the GeoApiContext with the API key

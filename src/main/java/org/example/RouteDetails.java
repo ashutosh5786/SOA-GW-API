@@ -12,4 +12,10 @@ public class RouteDetails {
         this.endAddress = endAddress;
     }
 
+
+    public RouteDetails(String errorMessage) {
+        this.estimatedTimeInSeconds = null;
+        this.startAddress = errorMessage;
+    }
+
 }
