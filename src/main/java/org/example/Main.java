@@ -64,18 +64,21 @@ public class Main {
 
                     // Create some job offer objects and add them to the JSON array
                     JsonObject jobOffer1 = new JsonObject();
+                    jobOffer1.addProperty("offerId", 1001);
                     jobOffer1.addProperty("title", "Restaurant 1");
                     jobOffer1.addProperty("description", "Standard Delivery");
                     jobOffer1.addProperty("pay", 5);
                     jobOfferArray.add(jobOffer1);
 
                     JsonObject jobOffer2 = new JsonObject();
+                    jobOffer2.addProperty("offerId", 1002);
                     jobOffer2.addProperty("title", "Restaurant 2");
                     jobOffer2.addProperty("description", "Fast Pace Delivery");
                     jobOffer2.addProperty("pay", 7);
                     jobOfferArray.add(jobOffer2);
 
                     JsonObject jobOffer3 = new JsonObject();
+                    jobOffer2.addProperty("offerId", 1003);
                     jobOffer3.addProperty("title", "Restaurant 3");
                     jobOffer3.addProperty("description", "Within 10 min Delivery");
                     jobOffer3.addProperty("pay", 10);
@@ -114,7 +117,7 @@ public class Main {
         }
 
         // Check if the types of the fields are as expected
-        return jobOfferObject.get("title").isJsonPrimitive() &&
+        return  jobOfferObject.get("title").isJsonPrimitive() &&
                 jobOfferObject.get("description").isJsonPrimitive() &&
                 jobOfferObject.get("pay").getAsJsonPrimitive().isNumber(); // Incorrect field types
     }
