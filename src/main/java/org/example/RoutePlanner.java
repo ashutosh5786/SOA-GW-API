@@ -1,12 +1,9 @@
 package org.example;
+
 import com.google.maps.DirectionsApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.errors.ApiException;
-import com.google.maps.model.DirectionsResult;
-import com.google.maps.model.DirectionsRoute;
-import com.google.maps.model.DirectionsLeg;
-import com.google.maps.model.TravelMode;
-import com.google.maps.model.Unit;
+import com.google.maps.model.*;
 
 import java.io.IOException;
 
@@ -58,8 +55,6 @@ public class RoutePlanner implements IDUServiceRoutePlanner {
                 String durationText = leg.duration.humanReadable;
                 String distanceInMeters = leg.distance.humanReadable;
                 String estimatedTimeInSeconds = leg.duration.humanReadable;
-
-                // Creating RouteDetail object with all data
 
                 return new RouteDetails(estimatedTimeInSeconds, distanceInMeters, startLocation, targetLocation );
             } else {

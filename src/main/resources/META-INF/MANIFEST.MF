@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Main-Class: org.example.Main
+Class-Path: websocket-api-9.4.31.v20200723.jar websocket-server-9.4.31.v
+ 20200723.jar google-maps-services-2.2.0.jar kotlin-stdlib-jdk7-1.5.31.j
+ ar okhttp-4.10.0.jar jetty-security-9.4.31.v20200723.jar javax.servlet-
+ api-3.1.0.jar logback-core-1.2.3.jar spark-core-2.9.3.jar websocket-cli
+ ent-9.4.31.v20200723.jar kotlin-stdlib-1.6.20.jar dotenv-java-2.2.0.jar
+  opencensus-api-0.31.0.jar kotlin-stdlib-common-1.5.31.jar jetty-server
+ -9.4.31.v20200723.jar logback-classic-1.2.3.jar grpc-context-1.27.2.jar
+  jetty-xml-9.4.31.v20200723.jar websocket-servlet-9.4.31.v20200723.jar 
+ okio-jvm-3.0.0.jar slf4j-api-1.7.25.jar annotations-13.0.jar jetty-serv
+ let-9.4.31.v20200723.jar gson-2.10.1.jar jetty-io-9.4.31.v20200723.jar 
+ websocket-common-9.4.31.v20200723.jar jetty-http-9.4.31.v20200723.jar k
+ otlin-stdlib-jdk8-1.5.31.jar jetty-client-9.4.31.v20200723.jar jetty-ut
+ il-9.4.31.v20200723.jar jetty-webapp-9.4.31.v20200723.jar
+
